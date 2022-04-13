@@ -1,0 +1,24 @@
+{
+  "name": "chess-game",
+  "packageManager": "yarn@3.2.0",
+  "private": true,
+  "scripts": {
+    "web": "yarn workspace @activitytracker/web",
+    "server": "yarn workspace @activitytracker/server",
+    "shared": "yarn workspace @activitytracker/shared",
+    "web:client:start": "yarn web start",
+    "server:start": "yarn server start",
+    "config:update": "yarn shared config:update",
+    "web:startx": "concurrently --kill-others-on-fail -n \"SHARED,SERVER,WEB\" -c \"yellow,magenta,cyan\" \"yarn config:update\" \"\" \"\"",
+    "web:start": "yarn config:update && concurrently --kill-others-on-fail -n \"SERVER,WEB\" -c \"magenta,cyan\" \"yarn server:start\" \"yarn web:client:start\""
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "classnames": "^2.3.1",
+    "concurrently": "^7.0.0",
+    "node-sass": "^7.0.1",
+    "react-router-dom": "^6.2.2"
+  }
+}
