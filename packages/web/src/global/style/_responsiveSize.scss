@@ -1,0 +1,29 @@
+@mixin maxVW () {
+    @media screen and (max-width: 1600px) {
+        @content;
+    }
+}
+
+@mixin largeVW () {
+    @media screen and (max-width: 1300px) {
+        @content;
+    }
+}
+
+@mixin mediumVW () {
+    @media screen and (max-width: 1000px) {
+        @content;
+    }
+}
+
+@mixin mobileVW () {
+    @media screen and (max-width: 787px) {
+        @content;
+    }
+}
+
+@mixin tinyVW () {
+    @media screen and (max-width: 450px) {
+        @content;
+    }
+}
