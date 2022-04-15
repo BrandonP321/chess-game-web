@@ -35,6 +35,11 @@ export class ChessPiece implements TChessPiece {
 
     public get icon() { return this._icon };
     public get squareIndex() { return this._squareIndex };
+    public set squareIndex(index: number) {
+        if (index >= 0 && index <= 63) {
+            this._squareIndex = index;
+        }
+    }
     public get name() { return this._name };
     public get color() { return this._color };
     public get row() { return this.squareLocation.row };
