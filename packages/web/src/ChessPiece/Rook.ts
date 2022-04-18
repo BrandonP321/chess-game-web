@@ -2,7 +2,7 @@ import { faChessRook } from "@fortawesome/pro-solid-svg-icons";
 import { ChessPieceUtils } from "../utils/ChessPieceUtils";
 import { ChessPiece, TChessPieceConstructorProps, TChessPieceName, TPiecePossibleMove } from "./ChessPiece";
 
-const relativeRookMoves = ChessPieceUtils.getRookRelativeMoves();
+const relativeRookMoves = ChessPieceUtils.rookRelativeMoves;
 
 export class Rook extends ChessPiece {
     protected _name: TChessPieceName = "rook";

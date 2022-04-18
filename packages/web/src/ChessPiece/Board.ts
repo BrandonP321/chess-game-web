@@ -3,28 +3,32 @@ import { Bishop } from "./Bishop";
 import { ChessPiece, TChessPieceColor } from "./ChessPiece";
 import { Pawn } from "./Pawn";
 import { Rook } from "./Rook";
+import { Queen } from "./Queen";
+import { King } from "./King";
 
 export class Board {
-    private _squares: (ChessPiece | null)[] = [];
     private _piecesObj: { [key: number]: ChessPiece } = {};
     private _piecesArr: (ChessPiece | null)[] = [];
     private _takenPieces: { [key in TChessPieceColor]: ChessPiece[] } = {
         white: [], black: []
     };
 
-    public get squares() { return this._squares };
     public get piecesObj() { return this._piecesObj };
     public get pieces() { return this._piecesArr };
     public get takenPieces() { return this._takenPieces };
-
+    
     constructor() {
         const { board, pieces } = Board.getBaseBoardLayout();
-
-        this._squares = board;
-
+                
         pieces.forEach(p => this.addPiece(p))
     }
 
+    public static squareCount = 64;
+
+    public static get allPieceTypes() {
+        return [Rook, Bishop, Queen, Pawn, King];
+    }
+    
     private addPiece = (piece: ChessPiece) => {
         this._piecesArr.push(piece);
         this._piecesObj[piece.squareIndex] = piece;
@@ -36,13 +40,11 @@ export class Board {
         const board: (null | ChessPiece)[] = Array(64).fill(null);
 
         // array of all pieces on board in their starting positions
-        // const allPieces = [...Rook.getInstantiatedPieces(), ...Pawn.getInstantiatedPieces()];
-        const allPieces = [
-            ...Rook.getInstantiatedPieces(), 
-            ...Bishop.getInstantiatedPieces(), 
-            new Pawn({ color: "white", squareIndex: 23 }),
-            new Pawn({ color: "white", squareIndex: 19 }),
-        ];
+        const allPieces: ChessPiece[] = []
+
+        this.allPieceTypes.forEach(pieceType => {
+            pieceType.getInstantiatedPieces().forEach(p => allPieces.push(p))
+        });
 
         // mapp each piece into it's appropriate spot in the blank board array
         allPieces.forEach(piece => {

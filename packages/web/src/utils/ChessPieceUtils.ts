@@ -1,7 +1,7 @@
 import { TPieceLocation, TPiecePossibleMove } from "../ChessPiece/ChessPiece";
 
 export class ChessPieceUtils {
-    public static getRookRelativeMoves = () => {
+    public static get rookRelativeMoves() {
         const moves: TPiecePossibleMove[] = [];
     
         for (let i = 1; i <= 8; i++) {
@@ -16,7 +16,12 @@ export class ChessPieceUtils {
         return moves;
     }
 
-    public static getBishopRelativeMoves = () => {
+    public static get queenRelativeMoves() {
+        // we can just reuse the relative moves for a rook & bishop since they both apply to the queen
+        return [...this.rookRelativeMoves, ...this.bishopRelativeMoves]
+    }
+
+    public static get bishopRelativeMoves() {
         const moves: TPiecePossibleMove[] = [];
     
         for (let i = 1; i <= 8; i++) {
@@ -29,6 +34,12 @@ export class ChessPieceUtils {
         }
     
         return moves;
+    }
+
+    public static get kingRelativeMoves() {
+        /* use queen's moves to allow king to move in any direction, 
+        then filter that to only moves within one block of the king */
+        return this.queenRelativeMoves.filter(m => Math.abs(m.forward) <= 1 && Math.abs(m.right) <= 1);
     }
 
     public static getPawnRelativeMoves = () => {

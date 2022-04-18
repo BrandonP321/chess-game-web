@@ -2,7 +2,7 @@ import { faChessBishop } from "@fortawesome/pro-solid-svg-icons";
 import { ChessPieceUtils } from "../utils/ChessPieceUtils";
 import { ChessPiece, TChessPieceName } from "./ChessPiece";
 
-const relativeBishopMoves = ChessPieceUtils.getBishopRelativeMoves();
+const relativeBishopMoves = ChessPieceUtils.bishopRelativeMoves;
 
 export class Bishop extends ChessPiece {
     protected _name: TChessPieceName = "bishop";
