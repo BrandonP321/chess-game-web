@@ -44,7 +44,7 @@ export class ChessPieceUtils {
 
     public static getPawnRelativeMoves = () => {
         const moves = [
-            { forward: 1, right: 0 }, { forward: 2, right: 0 }
+            { forward: 1, right: 0 }, { forward: 2, right: 0 }, { forward: 1, right: 1 }, { forward: 1, right: -1 }
         ]
 
         // must return color specific moves since pawns can only move one direction

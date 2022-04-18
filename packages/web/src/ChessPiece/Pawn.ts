@@ -1,13 +1,12 @@
 import { faChessPawn, IconDefinition } from "@fortawesome/pro-solid-svg-icons";
 import { ChessPieceUtils } from "../utils/ChessPieceUtils";
-import { ChessPiece, TChessPieceConstructorProps, TChessPieceName, TPiecePossibleMove } from "./ChessPiece";
+import { ChessPiece, TChessPieceConstructorProps, TChessPieceName, TPieceLocation } from "./ChessPiece";
 
 const relativePawnMoves = ChessPieceUtils.getPawnRelativeMoves();
 
 export class Pawn extends ChessPiece {
     protected _name: TChessPieceName = "pawn";
     protected _icon: IconDefinition | null = faChessPawn;
-    // protected possibleMoves = allRelativePawnMoves;
     protected static startingSquareIndexesWhite = [8, 9, 10, 11, 12, 13, 14, 15];
     protected static startingSquareIndexesBlack = [48, 49, 50, 51, 52, 53, 54, 55];
 
@@ -27,7 +26,7 @@ export class Pawn extends ChessPiece {
 
         // if piece has moved, remove moves allowing piece to move 2 squares forward
         if (this.hasMoved) {
-            possibleMoves.filter(m => Math.abs(m.forward) === 2);
+            possibleMoves = possibleMoves.filter(m => Math.abs(m.forward) === 1);
         }
 
         possibleMoves = this.removeMovesOutsideBoard(possibleMoves);
@@ -37,9 +36,19 @@ export class Pawn extends ChessPiece {
         return movesIndexes;
     }
 
+    /* checks if pawn can attack a piece to it's diagonal, and exclude any forward attacks on enemy pieces */
+    public filterAttackMoves = (availableSquares: TPieceLocation[], allPiecesObj: { [key: number]: ChessPiece }) => {
+        return availableSquares.filter(s => {
+            const pieceOnSquare = allPiecesObj[ChessPieceUtils.squareBoardLocationToIndex(s)];
+            const isDiagonalPieceEnemy = pieceOnSquare?.color !== this.color && pieceOnSquare?.col !== this.col;
+
+            return (s.col === this.col && !pieceOnSquare) || (pieceOnSquare && isDiagonalPieceEnemy);
+        })
+    }
+
     private get hasMoved() {
         const { row } = this.squareLocation;
 
-        return (this.color === "white" && row === 1) || (this.color === "black" && row === 6);
+        return (this.color === "white" && row !== 1) || (this.color === "black" && row !== 6);
     }
 }

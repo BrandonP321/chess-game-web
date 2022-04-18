@@ -16,14 +16,14 @@ export class Board {
     public get piecesObj() { return this._piecesObj };
     public get pieces() { return this._piecesArr };
     public get takenPieces() { return this._takenPieces };
+
+    public static squareCount = 64;
     
     constructor() {
-        const { board, pieces } = Board.getBaseBoardLayout();
+        const { pieces } = Board.getBaseBoardLayout();
                 
         pieces.forEach(p => this.addPiece(p))
     }
-
-    public static squareCount = 64;
 
     public static get allPieceTypes() {
         return [Rook, Bishop, Queen, Pawn, King];
@@ -77,6 +77,11 @@ export class Board {
                 availableSquares = piece.removeBlockedSquares(pieceAlreadyOnSquare, availableSquares);
             }
         })
+
+        // if piece is pawn, check if it can attack a piece diagonally and prevent piece from attacking forward enemies
+        if (piece instanceof Pawn) {
+            availableSquares = piece.filterAttackMoves(availableSquares, this.piecesObj);
+        }
         
         // convert to object with square index as key and true as value
         const availableSquaresObj: { [key: number]: true } = {};
