@@ -45,10 +45,4 @@ export class Pawn extends ChessPiece {
             return (s.col === this.col && !pieceOnSquare) || (pieceOnSquare && isDiagonalPieceEnemy);
         })
     }
-
-    private get hasMoved() {
-        const { row } = this.squareLocation;
-
-        return (this.color === "white" && row !== 1) || (this.color === "black" && row !== 6);
-    }
 }

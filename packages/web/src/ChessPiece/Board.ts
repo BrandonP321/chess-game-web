@@ -5,6 +5,7 @@ import { Pawn } from "./Pawn";
 import { Rook } from "./Rook";
 import { Queen } from "./Queen";
 import { King } from "./King";
+import { Knight } from "./Knight";
 
 export class Board {
     private _piecesObj: { [key: number]: ChessPiece } = {};
@@ -21,12 +22,12 @@ export class Board {
     
     constructor() {
         const { pieces } = Board.getBaseBoardLayout();
-                
+
         pieces.forEach(p => this.addPiece(p))
     }
 
     public static get allPieceTypes() {
-        return [Rook, Bishop, Queen, Pawn, King];
+        return [Rook, Bishop, Queen, Pawn, King, Knight];
     }
     
     private addPiece = (piece: ChessPiece) => {
@@ -134,6 +135,8 @@ export class Board {
         delete this._piecesObj[piece.squareIndex];
         piece.squareIndex = newSquareIndex;
         this._piecesObj[newSquareIndex] = piece;
+
+        piece.setHasMoved();
 
         return this.pieces;
     }

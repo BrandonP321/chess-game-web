@@ -28,6 +28,7 @@ export class ChessPiece implements TChessPiece {
     regardless of the position of any other pieces or board size limitations */
     protected possibleMoves: TPiecePossibleMove[] = [];
     protected _color;
+    protected _hasMoved = false;
 
     protected _icon: IconDefinition | null = null;
     protected _name: TChessPieceName = null;
@@ -40,10 +41,12 @@ export class ChessPiece implements TChessPiece {
             this._squareIndex = index;
         }
     }
+
     public get name() { return this._name };
     public get color() { return this._color };
     public get row() { return this.squareLocation.row };
     public get col() { return this.squareLocation.col };
+    public get hasMoved() { return this._hasMoved };
 
     protected static startingSquareIndexesWhite: number[] = []
     protected static startingSquareIndexesBlack: number[] = []
@@ -51,6 +54,10 @@ export class ChessPiece implements TChessPiece {
     constructor(props: TChessPieceConstructorProps) {
         this._color = props.color;
         this._squareIndex = props.squareIndex;
+    }
+
+    public setHasMoved() {
+        this._hasMoved = true;
     }
 
     /* returns indexes of all squares piece can move too, 

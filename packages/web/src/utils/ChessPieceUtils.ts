@@ -42,6 +42,19 @@ export class ChessPieceUtils {
         return this.queenRelativeMoves.filter(m => Math.abs(m.forward) <= 1 && Math.abs(m.right) <= 1);
     }
 
+    public static get knightRelativeMoves() {
+        return [
+            { forward: 2, right: 1 },
+            { forward: 2, right: -1 },
+            { forward: 1, right: 2 },
+            { forward: 1, right: -2 },
+            { forward: -2, right: -1 },
+            { forward: -2, right: 1 },
+            { forward: -1, right: -2 },
+            { forward: -1, right: 2 },
+        ];
+    }
+
     public static getPawnRelativeMoves = () => {
         const moves = [
             { forward: 1, right: 0 }, { forward: 2, right: 0 }, { forward: 1, right: 1 }, { forward: 1, right: -1 }
