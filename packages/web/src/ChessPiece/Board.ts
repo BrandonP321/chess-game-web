@@ -27,7 +27,8 @@ export class Board {
     }
 
     public static get allPieceTypes() {
-        return [Rook, Bishop, Queen, Pawn, King, Knight];
+        // return [Rook, Bishop, Queen, Pawn, King, Knight];
+        return [Rook, King, Queen];
     }
     
     private addPiece = (piece: ChessPiece) => {
@@ -82,6 +83,8 @@ export class Board {
         // if piece is pawn, check if it can attack a piece diagonally and prevent piece from attacking forward enemies
         if (piece instanceof Pawn) {
             availableSquares = piece.filterAttackMoves(availableSquares, this.piecesObj);
+        } else if (piece instanceof King) {
+            availableSquares.push(...piece.getCastleMoves(this));
         }
         
         // convert to object with square index as key and true as value
@@ -108,6 +111,8 @@ export class Board {
         
         if (!piece || !isValidSpot || !isValidNewSquare) {
             return undefined;
+        } else if (piece instanceof King && Math.abs(ChessPieceUtils.squareIndexToBoardLocation(newSquareIndex).col - piece.col) > 1) {
+            return this.handleKingCastleMove(piece, newSquareIndex);
         }
 
         return this.movePiece(piece, newSquareIndex);
@@ -137,6 +142,24 @@ export class Board {
         this._piecesObj[newSquareIndex] = piece;
 
         piece.setHasMoved();
+
+        return this.pieces;
+    }
+
+    private handleKingCastleMove = (king: King, newSquareIndex: number) => {
+        const isCastlingRight = newSquareIndex > king.squareIndex;
+        const rooksOfSameColor = (king.color === "white" ? Rook.startingSquareIndexesWhite : Rook.startingSquareIndexesBlack).map(rookIndex => this.getPieceByIndex(rookIndex));
+        const rookToMove = rooksOfSameColor.find(rook => isCastlingRight ? (rook?.col ?? 0) > king.col : (rook?.col ?? 0) < king.col);
+        
+        const newRookSquare = isCastlingRight ? king.col + 1 : king.col - 1;
+
+        if (!rookToMove) {
+            return undefined;
+        }
+
+        // move both the rook and the king
+        this.movePiece(rookToMove, newRookSquare);
+        this.movePiece(king, newSquareIndex);
 
         return this.pieces;
     }
