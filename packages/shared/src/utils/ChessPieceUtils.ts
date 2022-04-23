@@ -1,4 +1,4 @@
-import { TPieceLocation, TPiecePossibleMove } from "../ChessPiece/ChessPiece";
+import { TPieceLocation, TPiecePossibleMove } from "../ChessBoard";
 
 export class ChessPieceUtils {
     public static get rookRelativeMoves() {

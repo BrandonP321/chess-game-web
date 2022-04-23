@@ -1,6 +1,6 @@
 import { faChessKnight, IconDefinition } from "@fortawesome/pro-solid-svg-icons";
 import { ChessPieceUtils } from "../utils/ChessPieceUtils";
-import { ChessPiece, TChessPieceName, TPieceLocation, TPiecePossibleMove } from "./ChessPiece";
+import { ChessPiece, TChessPieceName } from "./ChessPiece";
 
 const relativeKnightMoves = ChessPieceUtils.knightRelativeMoves;
 

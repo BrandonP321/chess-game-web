@@ -1,0 +1,16 @@
+{
+    "name": "@chess-game/shared",
+    "packageManager": "yarn@3.0.2",
+    "version": "1.0.0",
+    "main": "./src/index.ts",
+    "source": "src/index.ts",
+    "module": "./src/index.ts",
+    "private": true,
+    "dependencies": {
+        "axios": "^0.26.0",
+        "dotenv": "^16.0.0"
+    },
+    "devDependencies": {
+        "@types/axios": "^0.14.0"
+    }
+}
