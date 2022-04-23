@@ -13,10 +13,17 @@ export class Board {
     private _takenPieces: { [key in TChessPieceColor]: ChessPiece[] } = {
         white: [], black: []
     };
+    private _isGameOver = false;
+    private _winningColor: TChessPieceColor | null = null;
+    /* color of team that is currently moving a piece.  null is game not active */
+    private _teamMoving: null | TChessPieceColor = null;
 
     public get piecesObj() { return this._piecesObj };
     public get pieces() { return this._piecesArr };
     public get takenPieces() { return this._takenPieces };
+    public get isGameOver() { return this._isGameOver };
+    public get winningColor() { return this._winningColor };
+    public get teamMoving() { return this._teamMoving };
 
     public static squareCount = 64;
     
@@ -30,10 +37,27 @@ export class Board {
         // return [Rook, Bishop, Queen, Pawn, King, Knight];
         return [Rook, King, Queen];
     }
+
+    public startGame() {
+        this.resetGameBoard();
+        this._teamMoving = "white";
+    }
     
     private addPiece = (piece: ChessPiece) => {
         this._piecesArr.push(piece);
         this._piecesObj[piece.squareIndex] = piece;
+    }
+
+    private setGameWinner = (winningTeam: TChessPieceColor) => {
+        this._isGameOver = true;
+        this._winningColor = winningTeam;
+    }
+
+    /* resets game win status and taken pieces */
+    public resetGameBoard = () => {
+        this._isGameOver = false;
+        this._winningColor = null;
+        this._takenPieces = { white: [], black: [] };
     }
 
     /* Returns board squares array with pieces in their starting positions */
@@ -101,15 +125,22 @@ export class Board {
         this._takenPieces[piece.color]?.push(piece);
         // remove piece from board
         this.removePiece(piece);
+
+        // if taken piece is a King, set opposite team of taken piece as the winner
+        if (piece instanceof King) {
+            this.setGameWinner(piece.color === "white" ? "black" : "white");
+        }
     }
 
     public attemptPieceMove = (currentSquareIndex: number, newSquareIndex: number) => {
         const piece = this.getPieceByIndex(currentSquareIndex);
         const isValidNewSquare = newSquareIndex >= 0 && newSquareIndex <= 63;
+        /* verify that piece being moved is of the same color as the team that is currently moving a piece */
+        const isCorrectPieceColor = piece?.color === this._teamMoving;
         
         const isValidSpot = this.getPieceAvailableMoves(currentSquareIndex)?.[newSquareIndex];
         
-        if (!piece || !isValidSpot || !isValidNewSquare) {
+        if (!piece || !isValidSpot || !isValidNewSquare || !isCorrectPieceColor) {
             return undefined;
         } else if (piece instanceof King && Math.abs(ChessPieceUtils.squareIndexToBoardLocation(newSquareIndex).col - piece.col) > 1) {
             return this.handleKingCastleMove(piece, newSquareIndex);
