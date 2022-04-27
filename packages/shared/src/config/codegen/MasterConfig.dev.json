@@ -1,0 +1,1 @@
+{"WebConfig":{"enabled":true},"ConnectionSettings":{"enabled":true,"ClientAPIUrlString":{"value":"dev url","enabled":true}},"JWTSettings":{"enabled":true,"AccessTokenExpirationTime":{"value":"28800000","enabled":true},"RefreshTokenExpirationTime":{"value":"604800000","enabled":true}},"ServerConfig":{"enabled":true},"Master":{"enabled":true}}

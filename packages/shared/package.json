@@ -6,6 +6,9 @@
     "source": "src/index.ts",
     "module": "./src/index.ts",
     "private": true,
+    "scripts": {
+        "config:update": "ts-node ./scripts/fileWatcher.ts"
+    },
     "dependencies": {
         "axios": "^0.26.0",
         "dotenv": "^16.0.0"
