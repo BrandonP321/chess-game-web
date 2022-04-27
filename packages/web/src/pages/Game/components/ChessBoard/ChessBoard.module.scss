@@ -1,0 +1,115 @@
+@import "../../../../global/style/uiBase.scss";
+
+// sets background color for board square
+@mixin BoardSquareColors() {
+    background-color: #9d571b;
+
+    &:nth-child(2n) {
+        background-color: #e6ccab;
+    }
+
+    @for $row from 1 through 7 {
+        &:nth-child(2n + #{($row * 8) + 1}) {
+            @if ($row % 2) != 0 {
+                background-color: #e6ccab;
+            } @else {
+                background-color: #9d571b;
+            }
+        }
+
+        &:nth-child(2n + #{($row * 8) + 2}) {
+            @if ($row % 2) != 0 {
+                background-color: #9d571b;
+            } @else {
+                background-color: #e6ccab;
+            }
+        }
+    }
+}
+
+$pieceAnimationDuration: 0.5s;
+
+.board {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap-reverse;
+    max-width: 100vh;
+    margin: 0 auto;
+}
+
+.square {
+    @include BoardSquareColors();
+    position: relative;
+    width: (100% / 8);
+
+    &:hover {
+
+    }
+    
+    &.hasPiece,
+    &.availableMove {
+        cursor: pointer;
+    }
+
+    &.availableMove {
+
+        .availabilityCircle {
+            opacity: 1;
+        }
+    }
+
+    &.selected {
+        background-color: green;
+    }
+}
+
+.squareAspectRatioBox {
+    padding-top: 100%;
+}
+
+.availabilityCircle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: red;
+    opacity: 0;
+}
+
+.squareContentWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1rem;
+}
+
+.pieceWrapper {
+    position: absolute;
+    width: (100% / 8);
+    pointer-events: none;
+    transition: left $pieceAnimationDuration, bottom $pieceAnimationDuration;
+}
+
+.pieceIcon {
+    font-size: 3rem;
+
+    &.black {
+
+    }
+
+    &.white {
+        color: white;
+    }
+}
+
+.pieceIconWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
